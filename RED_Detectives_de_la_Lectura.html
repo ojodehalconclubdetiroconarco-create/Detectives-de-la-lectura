@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+     METADATOS DEL RECURSO EDUCATIVO DIGITAL (RED)
+     ============================================================ -->
+<title>Detectives de la Lectura: La misión de las palabras</title>
+<meta name="author" content=""> <!-- DEJAR ESPACIO PARA EL NOMBRE DEL AUTOR -->
+<meta name="description" content="Recurso Educativo Digital gamificado orientado al fortalecimiento de la comprensión lectora literal, inferencial y crítica en estudiantes de tercero de primaria.">
+<meta name="keywords" content="comprensión lectora, gamificación, educación primaria, lectura, recurso educativo digital">
+<meta name="subject" content="Lengua Castellana">
+<meta name="educational-level" content="Tercero de primaria">
+<meta name="topic" content="Comprensión lectora">
+<meta name="language" content="es">
+<meta name="theme-color" content="#1B2A4A">
+<meta name="viewport-fit" content="cover">
+
+<!-- Metadatos adicionales sugeridos para futura alineación con estándares -->
+<meta name="resource-type" content="Recurso Educativo Digital interactivo">
+<meta name="pedagogical-approach" content="Gamificación y aprendizaje activo">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   DETECTIVES DE LA LECTURA — ESTILOS
+   Sistema de tokens: paleta "carpeta de caso" + tipografía Fredoka/Nunito
+   ========================================================================= */
+
+:root {
+  /* Color */
+  --color-bg: #F6EFDD;          /* papel / pergamino */
+  --color-bg-soft: #EDE2C9;     /* panel secundario */
+  --color-ink: #1B2A4A;         /* azul tinta - encabezado, texto fuerte */
+  --color-ink-soft: #33456B;    /* azul tinta suave */
+  --color-amber: #E8A93A;       /* acento principal (CTA) */
+  --color-amber-dark: #C1811C;  /* hover / texto sobre ámbar */
+  --color-red: #D1495B;         /* incorrecto / alerta */
+  --color-red-bg: #FBE6E9;
+  --color-green: #3F8F62;       /* correcto / éxito */
+  --color-green-bg: #E4F3EA;
+  --color-line: #C9BB98;        /* líneas punteadas tipo cuerda de pistas */
+  --color-white: #FFFDF8;
+
+  /* Tipografía */
+  --font-display: 'Fredoka', 'Segoe UI Rounded', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --font-mono: 'Space Mono', 'Courier New', monospace;
+
+  /* Layout */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --shadow-card: 0 10px 30px rgba(27, 42, 74, 0.12);
+  --max-width: 760px;
+  --focus-ring: 3px solid #1656C2;
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  background-image:
+    radial-gradient(circle at 20px 20px, rgba(27,42,74,0.035) 2px, transparent 2px);
+  background-size: 26px 26px;
+  color: var(--color-ink);
+  font-size: 18px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  margin: 0 0 0.5em 0;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+
+p { margin: 0 0 1em 0; }
+
+/* Enlace "saltar al contenido" para accesibilidad por teclado */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--color-ink);
+  color: var(--color-white);
+  padding: 10px 16px;
+  border-radius: 0 0 8px 0;
+  z-index: 1000;
+  font-weight: 700;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Foco visible en toda la aplicación (no depender solo del color) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* =========================================================================
+   ENCABEZADO
+   ========================================================================= */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-ink);
+  color: var(--color-white);
+  padding: 10px 18px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+
+.header-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand-icon { font-size: 1.6rem; }
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0;
+  white-space: nowrap;
+}
+.brand-subtitle {
+  font-size: 0.72rem;
+  margin: 0;
+  color: #C9D3E6;
+  white-space: nowrap;
+}
+
+/* Barra de progreso: "cuerda de pistas" con marcador de lupa */
+.progress-track {
+  position: relative;
+  height: 26px;
+  min-width: 120px;
+}
+.progress-line {
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 3px;
+  transform: translateY(-50%);
+  background-image: repeating-linear-gradient(90deg, #7C8BAE 0 8px, transparent 8px 14px);
+  border-radius: 2px;
+}
+.progress-fill {
+  position: absolute;
+  top: 50%; left: 0;
+  height: 3px;
+  width: 0%;
+  transform: translateY(-50%);
+  background: var(--color-amber);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+.progress-marker {
+  position: absolute;
+  top: 50%; left: 0%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  transition: left 0.5s ease;
+}
+
+.score-panel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+.score-label { font-size: 0.7rem; color: #C9D3E6; }
+.score-value { font-weight: 700; color: var(--color-amber); font-size: 1rem; }
+
+.reset-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #E7ECF7;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.reset-btn:hover { background: rgba(255,255,255,0.12); }
+
+/* =========================================================================
+   PANTALLAS (una visible a la vez)
+   ========================================================================= */
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 28px 16px 60px;
+}
+
+.screen { display: none; }
+.screen.active {
+  display: block;
+  animation: fade-in-up 0.45s ease;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tarjeta estilo "carpeta de caso" */
+.case-card {
+  position: relative;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 34px 30px 30px;
+  border: 1px solid rgba(27,42,74,0.06);
+}
+
+/* Pestaña de carpeta decorativa (sello) */
+.stamp {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-amber-dark);
+  background: #FFF3DD;
+  border: 1px dashed var(--color-amber);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin: 0 0 16px 0;
+}
+
+.hero-card { text-align: center; }
+.hero-icon { font-size: 2.6rem; margin-bottom: 6px; }
+.hero-subtitle {
+  font-family: var(--font-display);
+  color: var(--color-amber-dark);
+  font-weight: 600;
+  margin-top: -6px;
+}
+.hero-text { max-width: 54ch; margin-left: auto; margin-right: auto; }
+.hero-meta { font-size: 0.85rem; color: var(--color-ink-soft); margin-top: 18px; }
+
+/* =========================================================================
+   BOTONES
+   ========================================================================= */
+.btn {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 999px;
+  padding: 12px 22px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  min-height: 48px;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-primary {
+  background: var(--color-amber);
+  color: var(--color-ink);
+  box-shadow: 0 4px 0 var(--color-amber-dark);
+}
+.btn-primary:hover:not(:disabled) { background: #EFB84F; }
+.btn-primary:active:not(:disabled) { box-shadow: 0 1px 0 var(--color-amber-dark); }
+
+.btn-secondary {
+  background: var(--color-white);
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+.btn-secondary:hover { background: var(--color-bg-soft); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink-soft);
+  border-color: var(--color-line);
+}
+.btn-ghost:hover { background: var(--color-bg-soft); }
+
+.btn-large { font-size: 1.1rem; padding: 14px 30px; }
+.btn-small { font-size: 0.85rem; padding: 8px 14px; min-height: 36px; }
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 26px;
+  flex-wrap: wrap;
+}
+.nav-row-center { justify-content: center; }
+
+/* =========================================================================
+   LISTAS DE MISIÓN / INSTRUCCIONES
+   ========================================================================= */
+.mission-list, .instructions-list {
+  list-style: none;
+  margin: 18px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mission-list li, .instructions-list li {
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.instructions-list { counter-reset: instr; }
+.instr-icon { font-size: 1.2rem; }
+
+/* =========================================================================
+   LECTURA
+   ========================================================================= */
+.audio-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.audio-hint { font-size: 0.85rem; color: var(--color-ink-soft); }
+.reading-hint { font-size: 0.9rem; color: var(--color-ink-soft); }
+
+.story-text {
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  border-left: 6px solid var(--color-amber);
+}
+.story-text p { margin: 0 0 1em 0; }
+.story-text p:last-child { margin-bottom: 0; }
+
+.gloss {
+  background: none;
+  border: none;
+  border-bottom: 2px dotted var(--color-amber-dark);
+  color: var(--color-ink);
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+.gloss:hover, .gloss:focus-visible { background: #FFF3DD; }
+
+.gloss-popover {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 90%;
+  width: 380px;
+  background: var(--color-ink);
+  color: var(--color-white);
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  z-index: 200;
+}
+.gloss-word { font-family: var(--font-display); font-weight: 600; margin-bottom: 4px; text-transform: capitalize; }
+.gloss-def { font-size: 0.9rem; margin-bottom: 10px; color: #DCE3F2; }
+
+/* =========================================================================
+   MISIONES / PREGUNTAS
+   ========================================================================= */
+.mission-desc { color: var(--color-ink-soft); }
+
+.mission-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  margin-bottom: 18px;
+}
+
+.evidence-card {
+  border: 2px dashed var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 20px 20px 18px;
+  position: relative;
+  background: #FFFEFB;
+}
+.evidence-pin {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  font-size: 1.3rem;
+  transform: rotate(-8deg);
+}
+.evidence-card legend {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0 4px 10px 0;
+  color: var(--color-ink);
+}
+.evidence-card fieldset { border: none; margin: 0; padding: 0; }
+
+.scenario-box {
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-style: italic;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+/* Opciones de selección múltiple */
+.option-list { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.option-item:hover { border-color: var(--color-amber); background: #FFFAF0; }
+.option-item input[type="radio"] { width: 20px; height: 20px; accent-color: var(--color-amber-dark); flex-shrink: 0; }
+.option-item.is-selected { border-color: var(--color-amber-dark); background: #FFF3DD; }
+.option-item.is-correct { border-color: var(--color-green); background: var(--color-green-bg); }
+.option-item.is-incorrect { border-color: var(--color-red); background: var(--color-red-bg); }
+.option-item.is-disabled { cursor: default; }
+.option-item .option-icon { font-size: 1.1rem; min-width: 22px; text-align: center; }
+
+/* Verdadero / Falso como botones grandes */
+.tf-options { display: flex; gap: 14px; margin: 14px 0; }
+.tf-btn {
+  flex: 1;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-line);
+  background: var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.tf-btn:hover { border-color: var(--color-amber); background: #FFFAF0; }
+.tf-btn.is-selected { border-color: var(--color-amber-dark); background: #FFF3DD; }
+.tf-btn.is-correct { border-color: var(--color-green); background: var(--color-green-bg); }
+.tf-btn.is-incorrect { border-color: var(--color-red); background: var(--color-red-bg); }
+
+/* Relación de elementos (emparejar) */
+.match-list { display: flex; flex-direction: column; gap: 12px; margin: 14px 0; }
+.match-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+}
+.match-row label { font-size: 0.9rem; }
+.match-clue { font-weight: 700; }
+.match-row select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-line);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background: var(--color-white);
+}
+.match-row.is-correct select { border-color: var(--color-green); }
+.match-row.is-incorrect select { border-color: var(--color-red); }
+
+/* Retroalimentación */
+.feedback-box {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.95rem;
+}
+.feedback-box.correct { background: var(--color-green-bg); border: 1px solid var(--color-green); }
+.feedback-box.incorrect { background: var(--color-red-bg); border: 1px solid var(--color-red); }
+.feedback-icon { font-size: 1.3rem; }
+.feedback-title { font-weight: 700; margin: 0 0 4px 0; font-family: var(--font-display); }
+.feedback-box.correct .feedback-title { color: var(--color-green); }
+.feedback-box.incorrect .feedback-title { color: var(--color-red); }
+.feedback-text { margin: 0; }
+
+.question-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+
+/* =========================================================================
+   RESULTADOS / INSIGNIA
+   ========================================================================= */
+.results-score-wrap { text-align: center; margin: 10px 0; }
+.results-score {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-amber-dark);
+  margin: 0;
+  line-height: 1;
+}
+.results-score-label { color: var(--color-ink-soft); margin-top: 2px; }
+.results-rank {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--color-ink);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin: 18px 0;
+}
+
+.results-breakdown { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+.breakdown-bar-wrap {
+  flex: 1;
+  height: 10px;
+  background: var(--color-bg-soft);
+  border-radius: 999px;
+  margin: 0 14px;
+  overflow: hidden;
+}
+.breakdown-bar { height: 100%; background: var(--color-amber); }
+
+.badge-card { text-align: center; }
+.badge-display { font-size: 5rem; margin: 10px 0; }
+.badge-message { font-size: 1.05rem; color: var(--color-ink-soft); max-width: 50ch; margin: 0 auto; }
+
+/* =========================================================================
+   PIE DE PÁGINA
+   ========================================================================= */
+.app-footer {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--color-ink-soft);
+  padding: 20px 16px 40px;
+}
+
+/* =========================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .header-inner {
+    grid-template-columns: auto 1fr;
+    row-gap: 8px;
+  }
+  .progress-track { grid-column: 1 / -1; order: 3; }
+  .score-panel { order: 2; }
+  .reset-btn { display: none; }
+  .case-card { padding: 24px 18px 22px; }
+  .match-row { grid-template-columns: 1fr; }
+  .tf-options { flex-direction: column; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+  .results-score { font-size: 3rem; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Enlace de salto para accesibilidad por teclado -->
+<a class="skip-link" href="#main">Saltar al contenido principal</a>
+
+<!-- ============================================================
+     ENCABEZADO: marca, barra de progreso ("cuerda de pistas") y puntaje
+     ============================================================ -->
+<header class="app-header" role="banner">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">🔍</span>
+      <div class="brand-text">
+        <p class="brand-title">Detectives de la Lectura</p>
+        <p class="brand-subtitle">La misión de las palabras</p>
+      </div>
+    </div>
+
+    <div class="progress-track" role="progressbar" aria-label="Progreso general de la investigación"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressbar">
+      <div class="progress-line" aria-hidden="true"></div>
+      <div class="progress-fill" id="progress-fill" aria-hidden="true"></div>
+      <div class="progress-marker" id="progress-marker" aria-hidden="true">🔎</div>
+    </div>
+
+    <div class="score-panel" aria-live="polite">
+      <span class="score-icon" aria-hidden="true">⭐</span>
+      <span class="score-label">Puntos</span>
+      <span class="score-value" id="score-value">0</span>
+    </div>
+
+    <button type="button" class="reset-btn" id="btn-reset-progress" aria-label="Borrar progreso guardado y reiniciar el recurso">
+      <span aria-hidden="true">🗑️</span> Borrar progreso
+    </button>
+  </div>
+</header>
+
+<!-- ============================================================
+     CONTENIDO PRINCIPAL: 11 pantallas (una activa a la vez)
+     ============================================================ -->
+<main id="main">
+
+  <!-- 1. PANTALLA DE BIENVENIDA -->
+  <section id="screen-welcome" class="screen active" aria-labelledby="welcome-title">
+    <div class="case-card hero-card">
+      <p class="stamp">Caso confidencial · Grado 3°</p>
+      <div class="hero-icon" aria-hidden="true">🕵️‍♀️🔍</div>
+      <h1 id="welcome-title">Detectives de la Lectura</h1>
+      <p class="hero-subtitle">La misión de las palabras</p>
+      <p class="hero-text">
+        En la escuela Los Robles ha ocurrido un pequeño misterio y necesitamos a un detective
+        capaz de leer con atención, encontrar pistas y resolver el caso. ¿Aceptas la misión?
+      </p>
+      <button type="button" class="btn btn-primary btn-large" data-next="screen-mission-intro">
+        Comenzar la investigación <span aria-hidden="true">→</span>
+      </button>
+      <p class="hero-meta">Área: Lengua Castellana &nbsp;·&nbsp; Tema: Comprensión lectora</p>
+    </div>
+  </section>
+
+  <!-- 2. PRESENTACIÓN DE LA MISIÓN -->
+  <section id="screen-mission-intro" class="screen" aria-labelledby="intro-title">
+    <div class="case-card">
+      <p class="stamp">Briefing del caso</p>
+      <h2 id="intro-title">Tu misión, detective</h2>
+      <p>
+        El jardín de la escuela Los Robles amaneció marchito y nadie sabe exactamente por qué.
+        Tu trabajo es leer con mucha atención el reporte del caso y superar tres misiones de pistas
+        para descubrir la verdad.
+      </p>
+      <ul class="mission-list">
+        <li><span aria-hidden="true">📖</span> Leer con calma el reporte del caso.</li>
+        <li><span aria-hidden="true">🧩</span> Resolver 3 misiones de pistas (literal, inferencial y crítica).</li>
+        <li><span aria-hidden="true">🎯</span> Superar el reto final y cerrar el caso.</li>
+        <li><span aria-hidden="true">🏅</span> Ganar tu insignia de detective de la lectura.</li>
+      </ul>
+      <div class="nav-row">
+        <button type="button" class="btn btn-secondary" data-prev="screen-welcome">← Volver</button>
+        <button type="button" class="btn btn-primary" data-next="screen-instructions">Ver instrucciones →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. INSTRUCCIONES -->
+  <section id="screen-instructions" class="screen" aria-labelledby="instructions-title">
+    <div class="case-card">
+      <p class="stamp">Manual del detective</p>
+      <h2 id="instructions-title">Instrucciones</h2>
+      <ol class="instructions-list">
+        <li><span class="instr-icon" aria-hidden="true">📖</span> Lee el reporte del caso con calma. Puedes escucharlo si lo prefieres.</li>
+        <li><span class="instr-icon" aria-hidden="true">🧩</span> En cada misión responde las pistas. Hay preguntas de opción múltiple, verdadero/falso y de relación.</li>
+        <li><span class="instr-icon" aria-hidden="true">✅</span> Después de responder verás una explicación de por qué la respuesta es correcta o no.</li>
+        <li><span class="instr-icon" aria-hidden="true">⭐</span> Cada pista correcta suma puntos para tu puntaje final sobre 100.</li>
+        <li><span class="instr-icon" aria-hidden="true">💾</span> Tu progreso se guarda solo. Si cierras la página, puedes continuar después.</li>
+        <li><span class="instr-icon" aria-hidden="true">⌨️</span> Puedes usar el teclado: la tecla <kbd>Tab</kbd> mueve el foco y <kbd>Enter</kbd> confirma.</li>
+      </ol>
+      <div class="nav-row">
+        <button type="button" class="btn btn-secondary" data-prev="screen-mission-intro">← Volver</button>
+        <button type="button" class="btn btn-primary" data-next="screen-reading">Comenzar la lectura →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. LECTURA INTERACTIVA -->
+  <section id="screen-reading" class="screen" aria-labelledby="reading-title">
+    <div class="case-card reading-card">
+      <p class="stamp">Reporte del caso #01</p>
+      <h2 id="reading-title">El Misterio del Jardín Escolar</h2>
+
+      <div class="audio-controls">
+        <button type="button" class="btn btn-ghost" id="btn-tts-play">
+          <span aria-hidden="true">🔊</span> Escuchar la lectura
+        </button>
+        <button type="button" class="btn btn-ghost" id="btn-tts-stop" hidden>
+          <span aria-hidden="true">⏹️</span> Detener audio
+        </button>
+        <p class="audio-hint" id="tts-unsupported" hidden>Tu navegador no permite leer en voz alta, pero puedes leer el texto tranquilamente.</p>
+      </div>
+
+      <p class="reading-hint">
+        <span aria-hidden="true">💡</span> Pista: toca las palabras subrayadas para ver su significado.
+      </p>
+
+      <article class="story-text" lang="es">
+        <p>En la escuela Los Robles había un jardín hermoso lleno de flores rojas, amarillas y moradas.
+        Todos los estudiantes lo cuidaban con mucho cariño. Cada mañana, antes de entrar a clases,
+        regaban las plantas y recogían las hojas secas.</p>
+
+        <p>Un lunes, cuando los niños llegaron al jardín, se llevaron una gran sorpresa: ¡las flores estaban
+        <button type="button" class="gloss" data-def="Que perdieron su fuerza, su color y su forma, como cuando a una planta le falta agua.">marchitas</button>!
+        Sus pétalos colgaban tristes hacia el suelo y la tierra estaba completamente seca.</p>
+
+        <p>—¡Alguien debe haber olvidado regar las plantas! —dijo Mateo, preocupado.</p>
+
+        <p>Valentina, la niña más observadora del salón, decidió investigar. Se puso su gorra de detective
+        y comenzó a buscar pistas. Cerca de la manguera, encontró algo extraño: pequeñas huellas de patas
+        y un hueco recién cavado junto a las raíces de un rosal.</p>
+
+        <p>—Miren esto —dijo Valentina, señalando el hueco—. Alguien, o algo, estuvo
+        <button type="button" class="gloss" data-def="Cavando la tierra con las patas, como hacen algunos animales para buscar comida o esconderla.">escarbando</button> aquí.</p>
+
+        <p>El profesor Andrés se acercó y observó las huellas con atención.
+        —Estas huellas parecen ser de una ardilla —explicó—. Es posible que haya estado buscando semillas
+        para guardarlas antes del invierno.</p>
+
+        <p>Pero eso no explicaba por qué las flores estaban tan secas. Valentina siguió buscando y, al revisar
+        la manguera, notó que tenía un pequeño agujero por donde el agua se escapaba antes de llegar a las plantas.</p>
+
+        <p>—¡Aquí está el verdadero problema! —exclamó—. La manguera está rota y el agua nunca llegó hasta las raíces.</p>
+
+        <p>Los niños arreglaron la manguera con un poco de cinta especial y regaron cuidadosamente cada planta.
+        Además, taparon con tierra el hueco que había hecho la ardilla, para que las raíces no quedaran expuestas.</p>
+
+        <p>Al día siguiente, las flores comenzaron a recuperarse poco a poco. Una semana después, el jardín
+        volvía a estar lleno de color.</p>
+
+        <p>Desde ese día, los estudiantes revisaban la manguera cada mañana antes de regar, y aprendieron que
+        investigar con calma y observar los detalles ayuda a resolver los problemas.</p>
+      </article>
+
+      <div class="nav-row">
+        <button type="button" class="btn btn-secondary" data-prev="screen-instructions">← Volver</button>
+        <button type="button" class="btn btn-primary" data-next="screen-mission1">Iniciar Misión 1 →</button>
+      </div>
+    </div>
+
+    <!-- Tarjeta emergente de glosario -->
+    <div class="gloss-popover" id="gloss-popover" role="dialog" aria-modal="false" aria-labelledby="gloss-word" hidden>
+      <p class="gloss-word" id="gloss-word"></p>
+      <p class="gloss-def" id="gloss-def"></p>
+      <button type="button" class="btn btn-ghost btn-small" id="gloss-close">Cerrar</button>
+    </div>
+  </section>
+
+  <!-- 5. MISIÓN 1: COMPRENSIÓN LITERAL -->
+  <section id="screen-mission1" class="screen" aria-labelledby="m1-title">
+    <div class="case-card mission-card">
+      <p class="stamp">Misión 1 de 3</p>
+      <h2 id="m1-title"><span aria-hidden="true">🔎</span> Pistas literales</h2>
+      <p class="mission-desc">Encuentra los hechos exactos que cuenta el reporte del caso.</p>
+      <div class="mission-meta">
+        <span id="m1-question-indicator">Pista 1 de 5</span>
+        <span id="m1-score-indicator">Aciertos: 0</span>
+      </div>
+      <div class="question-container" id="m1-question-container" aria-live="polite"></div>
+      <div class="nav-row">
+        <button type="button" class="btn btn-secondary" data-prev="screen-reading">← Volver a la lectura</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. MISIÓN 2: COMPRENSIÓN INFERENCIAL -->
+  <section id="screen-mission2" class="screen" aria-labelledby="m2-title">
+    <div class="case-card mission-card">
+      <p class="stamp">Misión 2 de 3</p>
+      <h2 id="m2-title"><span aria-hidden="true">🧠</span> Pistas inferenciales</h2>
+      <p class="mission-desc">Usa las pistas del reporte para deducir lo que el texto no dice de forma directa.</p>
+      <div class="mission-meta">
+        <span id="m2-question-indicator">Pista 1 de 5</span>
+        <span id="m2-score-indicator">Aciertos: 0</span>
+      </div>
+      <div class="question-container" id="m2-question-container" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- 7. MISIÓN 3: COMPRENSIÓN CRÍTICA -->
+  <section id="screen-mission3" class="screen" aria-labelledby="m3-title">
+    <div class="case-card mission-card">
+      <p class="stamp">Misión 3 de 3</p>
+      <h2 id="m3-title"><span aria-hidden="true">⚖️</span> Pistas críticas</h2>
+      <p class="mission-desc">Piensa y opina: ¿qué harías tú? ¿Qué te parece lo que hicieron los personajes?</p>
+      <div class="mission-meta">
+        <span id="m3-question-indicator">Pista 1 de 5</span>
+        <span id="m3-score-indicator">Aciertos: 0</span>
+      </div>
+      <div class="question-container" id="m3-question-container" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- 8. MISIÓN FINAL -->
+  <section id="screen-mission-final" class="screen" aria-labelledby="mf-title">
+    <div class="case-card mission-card">
+      <p class="stamp">Reto final</p>
+      <h2 id="mf-title"><span aria-hidden="true">🗝️</span> Cierra el caso</h2>
+      <p class="mission-desc">Ya reuniste todas las pistas. Elige la explicación completa del misterio.</p>
+      <div class="question-container" id="mf-question-container" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- 9. RESULTADOS -->
+  <section id="screen-results" class="screen" aria-labelledby="results-title">
+    <div class="case-card">
+      <p class="stamp">Informe final</p>
+      <h2 id="results-title">Resultados de la investigación</h2>
+
+      <div class="results-score-wrap">
+        <p class="results-score" id="results-score">0</p>
+        <p class="results-score-label">puntos de 100</p>
+      </div>
+
+      <p class="results-rank" id="results-rank"></p>
+
+      <div class="results-breakdown" id="results-breakdown" aria-label="Detalle de aciertos por misión"></div>
+
+      <div class="nav-row">
+        <button type="button" class="btn btn-primary btn-large" data-next="screen-badge">Ver mi insignia <span aria-hidden="true">🏅</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. INSIGNIA / RECOMPENSA -->
+  <section id="screen-badge" class="screen" aria-labelledby="badge-title">
+    <div class="case-card badge-card">
+      <p class="stamp">Recompensa</p>
+      <h2 id="badge-title">¡Felicitaciones, detective!</h2>
+      <div id="badge-display" class="badge-display"></div>
+      <p id="badge-message" class="badge-message"></p>
+      <div class="nav-row">
+        <button type="button" class="btn btn-primary btn-large" data-next="screen-end">Finalizar caso →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. PANTALLA DE FINALIZACIÓN -->
+  <section id="screen-end" class="screen" aria-labelledby="end-title">
+    <div class="case-card hero-card">
+      <p class="stamp">Caso cerrado</p>
+      <div class="hero-icon" aria-hidden="true">📁✅</div>
+      <h2 id="end-title">¡Caso resuelto!</h2>
+      <p class="hero-text">
+        Gracias por investigar con nosotros. Leer con atención, buscar pistas y pensar con calma
+        te convierten en un gran detective de la lectura.
+      </p>
+      <div class="nav-row nav-row-center">
+        <button type="button" class="btn btn-secondary" id="btn-restart">
+          <span aria-hidden="true">🔄</span> Reiniciar el recurso
+        </button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <p>Detectives de la Lectura: La misión de las palabras — Recurso Educativo Digital · Lengua Castellana · Tercero de primaria</p>
+</footer>
+
+<!-- Región para anuncios accesibles fuera de las tarjetas de pregunta -->
+<div class="visually-hidden" role="status" aria-live="polite" id="global-announcer"></div>
+
+<script>
+/* =========================================================================
+   DETECTIVES DE LA LECTURA: LA MISIÓN DE LAS PALABRAS
+   Lógica de la aplicación (JavaScript puro, sin dependencias externas)
+   ========================================================================= */
+(function () {
+  'use strict';
+
+  /* -----------------------------------------------------------------------
+     1. DATOS DE LAS MISIONES Y PREGUNTAS
+     ----------------------------------------------------------------------- */
+  var MISSIONS = {
+    m1: {
+      title: 'Misión 1',
+      questions: [
+        {
+          id: 'm1q1',
+          type: 'mcq',
+          prompt: '¿En qué escuela ocurre la historia?',
+          options: ['Los Robles', 'San Martín', 'El Bosque', 'Las Palmas'],
+          correctIndex: 0,
+          feedback: {
+            correct: '¡Exacto! El reporte cuenta que todo ocurre en la escuela Los Robles.',
+            incorrect: 'Vuelve a pensarlo: el texto dice que la historia ocurre en la escuela Los Robles.'
+          }
+        },
+        {
+          id: 'm1q2',
+          type: 'mcq',
+          prompt: '¿Quién se puso la gorra de detective para investigar el jardín?',
+          options: ['Mateo', 'Valentina', 'El profesor Andrés', 'La directora'],
+          correctIndex: 1,
+          feedback: {
+            correct: 'Correcto. Valentina, la niña más observadora del salón, decidió investigar.',
+            incorrect: 'Revisa el texto: quien se puso la gorra de detective fue Valentina.'
+          }
+        },
+        {
+          id: 'm1q3',
+          type: 'tf',
+          prompt: 'Las huellas que encontró Valentina eran de un perro.',
+          correctIndex: 1,
+          feedback: {
+            correct: 'Correcto, el profesor explicó que las huellas parecían ser de una ardilla, no de un perro.',
+            incorrect: 'Recuerda: el profesor Andrés dijo que las huellas parecían ser de una ardilla.'
+          }
+        },
+        {
+          id: 'm1q4',
+          type: 'mcq',
+          prompt: '¿Qué encontró Valentina cerca de la manguera?',
+          options: ['Un juguete perdido', 'Huellas de patas y un hueco', 'Una flor nueva', 'Un balón'],
+          correctIndex: 1,
+          feedback: {
+            correct: 'Así es. Valentina encontró huellas de patas y un hueco recién cavado junto a las raíces.',
+            incorrect: 'Vuelve a mirar: cerca de la manguera había huellas de patas y un hueco.'
+          }
+        },
+        {
+          id: 'm1q5',
+          type: 'mcq',
+          prompt: '¿Con qué arreglaron la manguera los estudiantes?',
+          options: ['Con pegante', 'Con cinta especial', 'Con un clavo', 'La cambiaron por una nueva'],
+          correctIndex: 1,
+          feedback: {
+            correct: 'Correcto. El texto dice que arreglaron la manguera con un poco de cinta especial.',
+            incorrect: 'El reporte dice que usaron un poco de cinta especial para arreglar la manguera.'
+          }
+        }
+      ]
+    },
+
+    m2: {
+      title: 'Misión 2',
+      questions: [
+        {
+          id: 'm2q1',
+          type: 'mcq',
+          prompt: '¿Por qué estaban marchitas las flores?',
+          options: [
+            'Solo por la ardilla',
+            'Solo porque no había sol',
+            'Por el hueco de la ardilla y, sobre todo, porque el agua se escapaba de la manguera rota',
+            'Porque a nadie le gustaban'
+          ],
+          correctIndex: 2,
+          feedback: {
+            correct: '¡Muy bien deducido! Fueron dos pistas combinadas, pero la causa principal fue el agua que se escapaba de la manguera.',
+            incorrect: 'Piensa de nuevo: el texto menciona dos pistas relacionadas con el problema, no una sola.'
+          }
+        },
+        {
+          id: 'm2q2',
+          type: 'tf',
+          prompt: 'La ardilla fue la única causa de que las plantas se secaran.',
+          correctIndex: 1,
+          feedback: {
+            correct: 'Correcto. El hueco de la ardilla fue una pista, pero el problema principal fue el agua que se escapaba de la manguera.',
+            incorrect: 'Fíjate bien: la ardilla no fue la única causa, la manguera rota también fue clave.'
+          }
+        },
+        {
+          id: 'm2q3',
+          type: 'mcq',
+          prompt: '¿Qué relación hay entre el agujero de la manguera y la tierra seca?',
+          options: ['Ninguna relación', 'El agua se escapaba antes de llegar a las raíces', 'La manguera hacía más frío', 'El agujero atraía más ardillas'],
+          correctIndex: 1,
+          feedback: {
+            correct: 'Exacto: por el agujero se escapaba el agua, así que nunca llegaba hasta las raíces de las plantas.',
+            incorrect: 'Piensa en el camino del agua: el agujero hacía que se escapara antes de llegar a las raíces.'
+          }
+        },
+        {
+          id: 'm2q4',
+          type: 'match',
+          prompt: 'Relaciona cada pista con lo que probablemente explica.',
+          items: [
+            { left: 'Huellas de patas cerca del rosal', correct: 'Una ardilla estuvo cerca del jardín' },
+            { left: 'Un hueco junto a las raíces', correct: 'La ardilla escarbó buscando semillas' },
+            { left: 'Un agujero en la manguera', correct: 'El agua no llegaba hasta las plantas' }
+          ],
+          optionsPool: [
+            'La ardilla escarbó buscando semillas',
+            'El agua no llegaba hasta las plantas',
+            'Una ardilla estuvo cerca del jardín'
+          ],
+          feedback: {
+            correct: '¡Perfecto! Relacionaste cada pista con su explicación más probable.',
+            incorrect: 'Algunas relaciones no son correctas todavía. Observa las marcas en cada fila y vuelve a intentarlo la próxima vez.'
+          }
+        },
+        {
+          id: 'm2q5',
+          type: 'mcq',
+          scenario: 'Imagina esta situación:',
+          prompt: 'Si el profesor Andrés no hubiera revisado las huellas con atención, ¿qué crees que habría pasado?',
+          options: [
+            'Habrían encontrado la manguera rota de todas formas, sin ningún cambio',
+            'Podrían haber pensado que fue un perro y no habrían buscado más pistas',
+            'El jardín se habría arreglado solo',
+            'No habría cambiado absolutamente nada'
+          ],
+          correctIndex: 1,
+          feedback: {
+            correct: 'Buena deducción: sin observar con cuidado, pudieron haberse quedado con una idea equivocada y no seguir buscando.',
+            incorrect: 'Piensa qué pasa cuando no se observa con atención: es fácil quedarse con una idea equivocada.'
+          }
+        }
+      ]
+    },
+
+    m3: {
+      title: 'Misión 3',
+      questions: [
+        {
+          id: 'm3q1',
+          type: 'mcq',
+          prompt: '¿Qué opinas sobre la forma en que Valentina resolvió el problema?',
+          options: [
+            'Actuó sin pensar y adivinó la respuesta',
+            'Observó con calma, buscó pistas y sacó conclusiones basadas en lo que encontró',
+            'Culpó a la ardilla sin revisar nada más',
+            'Ignoró el problema y se fue a jugar'
+          ],
+          correctIndex: 1,
+          feedback: {
+            correct: 'Así es: Valentina observó, buscó pistas y pensó antes de concluir. Esa es una gran actitud de detective.',
+            incorrect: 'Vuelve a pensarlo: Valentina observó con calma y buscó pistas antes de sacar conclusiones.'
+          }
+        },
+        {
+          id: 'm3q2',
+          type: 'tf',
+          prompt: 'Investigar con calma y observar los detalles ayuda a resolver mejor los problemas.',
+          correctIndex: 0,
+          feedback: {
+            correct: 'Verdadero. Así lo aprendieron los estudiantes de Los Robles al final de la historia.',
+            incorrect: 'El propio final de la historia muestra que observar con calma sí ayuda a resolver los problemas.'
+          }
+        },
+        {
+          id: 'm3q3',
+          type: 'mcq',
+          scenario: 'Imagina esta situación:',
+          prompt: 'Si tú hubieras encontrado el jardín marchito, ¿cuál sería la mejor actitud?',
+          options: [
+            'Enojarme y no hacer nada',
+            'Buscar pistas con calma y pedir ayuda a un adulto si es necesario',
+            'Culpar a un compañero sin tener pruebas',
+            'Arrancar las plantas marchitas'
+          ],
+          correctIndex: 1,
+          feedback: {
+            correct: '¡Esa es la mejor actitud! Observar, pensar y pedir ayuda cuando se necesita.',
+            incorrect: 'Piensa en lo que hizo Valentina: observar con calma y, si hace falta, pedir ayuda a un adulto.'
+          }
+        },
+        {
+          id: 'm3q4',
+          type: 'mcq',
+          prompt: '¿Por qué es importante revisar los cuidados de las plantas todos los días?',
+          options: [
+            'Para que las plantas no crezcan demasiado',
+            'Para detectar a tiempo problemas como una fuga de agua',
+            'Porque a las plantas les gusta que las miren',
+            'En realidad no es muy importante'
+          ],
+          correctIndex: 1,
+          feedback: {
+            correct: 'Correcto: revisar todos los días permite detectar a tiempo problemas antes de que sean más grandes.',
+            incorrect: 'Piensa en lo que pasó en la historia: revisar a tiempo ayuda a detectar problemas antes de que crezcan.'
+          }
+        },
+        {
+          id: 'm3q5',
+          type: 'mcq',
+          prompt: '¿Te parece una buena decisión que taparan el hueco que hizo la ardilla?',
+          options: [
+            'No, porque la ardilla se enojaría con ellos',
+            'Sí, porque así protegen las raíces de las plantas sin lastimar a la ardilla',
+            'No, porque eso no cambia nada en el jardín',
+            'Sí, pero solo para que la ardilla nunca regrese'
+          ],
+          correctIndex: 1,
+          feedback: {
+            correct: 'Muy buena reflexión: cuidar las plantas y respetar a los animales pueden ir juntos.',
+            incorrect: 'Piensa en las dos cosas que se cuidan a la vez: las raíces de las plantas y la ardilla, sin hacerle daño.'
+          }
+        }
+      ]
+    },
+
+    mf: {
+      title: 'Reto final',
+      questions: [
+        {
+          id: 'mfq1',
+          type: 'mcq',
+          prompt: 'Como detective, ¿cuál es la explicación completa del misterio del jardín?',
+          options: [
+            'El jardín se secó solo porque llegó el invierno',
+            'Fue solo culpa de la ardilla que escarbó cerca de las raíces',
+            'Las flores se marchitaron por una combinación de causas: el hueco de la ardilla y, sobre todo, el agua que se escapaba por el agujero de la manguera',
+            'Nadie regó nunca las plantas desde el principio'
+          ],
+          correctIndex: 2,
+          feedback: {
+            correct: '¡Caso cerrado! Encontraste la explicación completa: dos pistas se combinaron, pero la causa principal fue el agua que se escapaba por el agujero de la manguera.',
+            incorrect: 'Revisa las pistas otra vez: hubo dos causas relacionadas, y la principal fue el agua que se escapaba de la manguera.'
+          }
+        }
+      ]
+    }
+  };
+
+  var MISSION_ORDER = ['m1', 'm2', 'm3', 'mf'];
+
+  var SCREENS = [
+    'screen-welcome', 'screen-mission-intro', 'screen-instructions', 'screen-reading',
+    'screen-mission1', 'screen-mission2', 'screen-mission3', 'screen-mission-final',
+    'screen-results', 'screen-badge', 'screen-end'
+  ];
+
+  var STORAGE_KEY = 'detectivesLectura_v1';
+
+  var STORY_PLAIN_TEXT = [
+    'En la escuela Los Robles había un jardín hermoso lleno de flores rojas, amarillas y moradas. Todos los estudiantes lo cuidaban con mucho cariño. Cada mañana, antes de entrar a clases, regaban las plantas y recogían las hojas secas.',
+    'Un lunes, cuando los niños llegaron al jardín, se llevaron una gran sorpresa: ¡las flores estaban marchitas! Sus pétalos colgaban tristes hacia el suelo y la tierra estaba completamente seca.',
+    'Alguien debe haber olvidado regar las plantas, dijo Mateo, preocupado.',
+    'Valentina, la niña más observadora del salón, decidió investigar. Se puso su gorra de detective y comenzó a buscar pistas. Cerca de la manguera, encontró algo extraño: pequeñas huellas de patas y un hueco recién cavado junto a las raíces de un rosal.',
+    'Miren esto, dijo Valentina, señalando el hueco. Alguien, o algo, estuvo escarbando aquí.',
+    'El profesor Andrés se acercó y observó las huellas con atención. Estas huellas parecen ser de una ardilla, explicó. Es posible que haya estado buscando semillas para guardarlas antes del invierno.',
+    'Pero eso no explicaba por qué las flores estaban tan secas. Valentina siguió buscando y, al revisar la manguera, notó que tenía un pequeño agujero por donde el agua se escapaba antes de llegar a las plantas.',
+    'Aquí está el verdadero problema, exclamó. La manguera está rota y el agua nunca llegó hasta las raíces.',
+    'Los niños arreglaron la manguera con un poco de cinta especial y regaron cuidadosamente cada planta. Además, taparon con tierra el hueco que había hecho la ardilla, para que las raíces no quedaran expuestas.',
+    'Al día siguiente, las flores comenzaron a recuperarse poco a poco. Una semana después, el jardín volvía a estar lleno de color.',
+    'Desde ese día, los estudiantes revisaban la manguera cada mañana antes de regar, y aprendieron que investigar con calma y observar los detalles ayuda a resolver los problemas.'
+  ].join(' ');
+
+  /* -----------------------------------------------------------------------
+     2. ESTADO DE LA APLICACIÓN
+     ----------------------------------------------------------------------- */
+  function defaultState() {
+    return {
+      currentScreen: 'screen-welcome',
+      missionQIndex: { m1: 0, m2: 0, m3: 0, mf: 0 },
+      answers: {},
+      results: {
+        m1: { correct: 0, total: MISSIONS.m1.questions.length },
+        m2: { correct: 0, total: MISSIONS.m2.questions.length },
+        m3: { correct: 0, total: MISSIONS.m3.questions.length },
+        mf: { correct: 0, total: MISSIONS.mf.questions.length }
+      }
+    };
+  }
+
+  var state = loadState();
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return defaultState();
+      var parsed = JSON.parse(raw);
+      if (!parsed || !parsed.results || !parsed.missionQIndex) return defaultState();
+      return parsed;
+    } catch (err) {
+      return defaultState();
+    }
+  }
+
+  function saveState() {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (err) {
+      /* localStorage no disponible: el recurso sigue funcionando sin guardar progreso */
+    }
+  }
+
+  function resetState() {
+    try { window.localStorage.removeItem(STORAGE_KEY); } catch (err) { /* no-op */ }
+    state = defaultState();
+  }
+
+  function totalCorrect() {
+    var sum = 0;
+    MISSION_ORDER.forEach(function (k) { sum += state.results[k].correct; });
+    return sum;
+  }
+
+  function totalQuestions() {
+    var sum = 0;
+    MISSION_ORDER.forEach(function (k) { sum += state.results[k].total; });
+    return sum;
+  }
+
+  function computeScore() {
+    var total = totalQuestions();
+    if (!total) return 0;
+    return Math.round((totalCorrect() / total) * 100);
+  }
+
+  /* -----------------------------------------------------------------------
+     3. NAVEGACIÓN ENTRE PANTALLAS
+     ----------------------------------------------------------------------- */
+  function goTo(screenId) {
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) { screens[i].classList.remove('active'); }
+    var target = document.getElementById(screenId);
+    if (!target) return;
+    target.classList.add('active');
+    state.currentScreen = screenId;
+    saveState();
+    updateProgress();
+    updateScorePanel();
+
+    var heading = target.querySelector('h1, h2');
+    if (heading) {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (screenId === 'screen-mission1') renderMissionQuestion('m1');
+    if (screenId === 'screen-mission2') renderMissionQuestion('m2');
+    if (screenId === 'screen-mission3') renderMissionQuestion('m3');
+    if (screenId === 'screen-mission-final') renderMissionQuestion('mf');
+    if (screenId === 'screen-results') renderResults();
+    if (screenId === 'screen-badge') renderBadge();
+    if (screenId !== 'screen-reading') stopSpeech();
+  }
+
+  function updateProgress() {
+    var index = SCREENS.indexOf(state.currentScreen);
+    if (index < 0) index = 0;
+    var percent = (index / (SCREENS.length - 1)) * 100;
+    var fill = document.getElementById('progress-fill');
+    var marker = document.getElementById('progress-marker');
+    var bar = document.getElementById('progressbar');
+    fill.style.width = percent + '%';
+    marker.style.left = percent + '%';
+    bar.setAttribute('aria-valuenow', Math.round(percent));
+  }
+
+  function updateScorePanel() {
+    document.getElementById('score-value').textContent = computeScore();
+  }
+
+  /* -----------------------------------------------------------------------
+     4. RENDERIZADO DE PREGUNTAS (motor genérico)
+     ----------------------------------------------------------------------- */
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderMissionQuestion(missionKey) {
+    var mission = MISSIONS[missionKey];
+    var qIndex = state.missionQIndex[missionKey];
+    var question = mission.questions[qIndex];
+    var containerId = (missionKey === 'mf' ? 'mf' : missionKey) + '-question-container';
+    var container = document.getElementById(containerId);
+    if (!container || !question) return;
+
+    updateMissionMeta(missionKey);
+
+    var isAnswered = !!state.answers[question.id];
+    container.innerHTML = buildQuestionMarkup(question, missionKey, qIndex, mission.questions.length);
+    wireQuestionEvents(question, missionKey, qIndex, mission.questions.length);
+
+    if (isAnswered) {
+      applyAnsweredState(question, missionKey, qIndex, mission.questions.length);
+    }
+  }
+
+  function updateMissionMeta(missionKey) {
+    if (missionKey === 'mf') return;
+    var mission = MISSIONS[missionKey];
+    var qIndex = state.missionQIndex[missionKey];
+    var indicator = document.getElementById(missionKey + '-question-indicator');
+    var scoreIndicator = document.getElementById(missionKey + '-score-indicator');
+    if (indicator) indicator.textContent = 'Pista ' + (qIndex + 1) + ' de ' + mission.questions.length;
+    if (scoreIndicator) scoreIndicator.textContent = 'Aciertos: ' + state.results[missionKey].correct + '/' + mission.questions.length;
+  }
+
+  function buildQuestionMarkup(question, missionKey, qIndex, total) {
+    var html = '';
+    html += '<fieldset class="evidence-card">';
+    html += '<span class="evidence-pin" aria-hidden="true">📌</span>';
+    html += '<legend>' + escapeHtml(question.prompt) + '</legend>';
+
+    if (question.scenario) {
+      html += '<p class="scenario-box">' + escapeHtml(question.scenario) + '</p>';
+    }
+
+    if (question.type === 'mcq') {
+      html += '<div class="option-list" role="radiogroup" aria-label="Opciones de respuesta">';
+      question.options.forEach(function (opt, i) {
+        html += '' +
+          '<label class="option-item" id="opt-' + question.id + '-' + i + '">' +
+          '<input type="radio" name="' + question.id + '" value="' + i + '">' +
+          '<span>' + escapeHtml(opt) + '</span>' +
+          '</label>';
+      });
+      html += '</div>';
+    } else if (question.type === 'tf') {
+      html += '<div class="tf-options" role="radiogroup" aria-label="Verdadero o falso">';
+      ['Verdadero', 'Falso'].forEach(function (label, i) {
+        html += '' +
+          '<label class="tf-btn" id="opt-' + question.id + '-' + i + '">' +
+          '<input type="radio" name="' + question.id + '" value="' + i + '" class="visually-hidden">' +
+          (i === 0 ? '✅ ' : '❌ ') + label +
+          '</label>';
+      });
+      html += '</div>';
+    } else if (question.type === 'match') {
+      html += '<div class="match-list">';
+      question.items.forEach(function (item, i) {
+        html += '<div class="match-row" id="row-' + question.id + '-' + i + '">';
+        html += '<label class="match-clue" for="sel-' + question.id + '-' + i + '">' + escapeHtml(item.left) + '</label>';
+        html += '<select id="sel-' + question.id + '-' + i + '" data-index="' + i + '">';
+        html += '<option value="">Selecciona una explicación…</option>';
+        question.optionsPool.forEach(function (opt) {
+          html += '<option value="' + escapeHtml(opt) + '">' + escapeHtml(opt) + '</option>';
+        });
+        html += '</select></div>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="feedback-box" id="fb-' + question.id + '" hidden></div>';
+    html += '<div class="question-actions">';
+    html += '<button type="button" class="btn btn-primary" id="check-' + question.id + '" disabled>Comprobar respuesta</button>';
+    html += '<button type="button" class="btn btn-primary" id="next-' + question.id + '" hidden>' + nextButtonLabel(missionKey, qIndex, total) + '</button>';
+    html += '</div>';
+    html += '</fieldset>';
+    return html;
+  }
+
+  function nextButtonLabel(missionKey, qIndex, total) {
+    if (qIndex < total - 1) return 'Siguiente pista →';
+    if (missionKey === 'm1') return 'Continuar a Misión 2 →';
+    if (missionKey === 'm2') return 'Continuar a Misión 3 →';
+    if (missionKey === 'm3') return 'Ir al reto final →';
+    if (missionKey === 'mf') return 'Ver resultados →';
+    return 'Continuar →';
+  }
+
+  function wireQuestionEvents(question, missionKey, qIndex, total) {
+    var checkBtn = document.getElementById('check-' + question.id);
+    var nextBtn = document.getElementById('next-' + question.id);
+
+    if (question.type === 'mcq' || question.type === 'tf') {
+      var radios = document.getElementsByName(question.id);
+      for (var i = 0; i < radios.length; i++) {
+        radios[i].addEventListener('change', function (e) {
+          var idx = e.target.value;
+          document.querySelectorAll('[id^="opt-' + question.id + '-"]').forEach(function (el) {
+            el.classList.remove('is-selected');
+          });
+          document.getElementById('opt-' + question.id + '-' + idx).classList.add('is-selected');
+          checkBtn.disabled = false;
+        });
+      }
+    } else if (question.type === 'match') {
+      var localSelects = document.querySelectorAll('[id^="sel-' + question.id + '-"]');
+      localSelects.forEach(function (sel) {
+        sel.addEventListener('change', function () {
+          var allFilled = true;
+          localSelects.forEach(function (s) { if (!s.value) allFilled = false; });
+          checkBtn.disabled = !allFilled;
+        });
+      });
+    }
+
+    checkBtn.addEventListener('click', function () {
+      handleCheck(question, missionKey, qIndex, total);
+    });
+
+    nextBtn.addEventListener('click', function () {
+      handleNext(missionKey, qIndex, total);
+    });
+  }
+
+  function handleCheck(question, missionKey, qIndex, total) {
+    var correct = false;
+
+    if (question.type === 'mcq' || question.type === 'tf') {
+      var checked = document.querySelector('input[name="' + question.id + '"]:checked');
+      var selectedIndex = checked ? parseInt(checked.value, 10) : -1;
+      correct = selectedIndex === question.correctIndex;
+
+      var count = question.type === 'tf' ? 2 : question.options.length;
+      for (var i = 0; i < count; i++) {
+        var el = document.getElementById('opt-' + question.id + '-' + i);
+        if (!el) continue;
+        el.classList.add('is-disabled');
+        var input = el.querySelector('input');
+        if (input) input.disabled = true;
+        if (i === question.correctIndex) el.classList.add('is-correct');
+        else if (i === selectedIndex) el.classList.add('is-incorrect');
+      }
+    } else if (question.type === 'match') {
+      correct = true;
+      question.items.forEach(function (item, i) {
+        var sel = document.getElementById('sel-' + question.id + '-' + i);
+        var row = document.getElementById('row-' + question.id + '-' + i);
+        var isRowCorrect = sel.value === item.correct;
+        if (!isRowCorrect) correct = false;
+        row.classList.add(isRowCorrect ? 'is-correct' : 'is-incorrect');
+        sel.disabled = true;
+      });
+    }
+
+    if (!state.answers[question.id]) {
+      var record = { correct: correct };
+      if (question.type === 'mcq' || question.type === 'tf') {
+        record.selectedIndex = selectedIndex;
+      } else if (question.type === 'match') {
+        record.selections = question.items.map(function (item, i) {
+          return document.getElementById('sel-' + question.id + '-' + i).value;
+        });
+      }
+      state.answers[question.id] = record;
+      if (correct) state.results[missionKey].correct += 1;
+    }
+    saveState();
+
+    var fb = document.getElementById('fb-' + question.id);
+    fb.hidden = false;
+    fb.classList.add(correct ? 'correct' : 'incorrect');
+    fb.innerHTML =
+      '<span class="feedback-icon" aria-hidden="true">' + (correct ? '✅' : '💡') + '</span>' +
+      '<div><p class="feedback-title">' + (correct ? '¡Correcto!' : 'Casi...') + '</p>' +
+      '<p class="feedback-text">' + escapeHtml(correct ? question.feedback.correct : question.feedback.incorrect) + '</p></div>';
+
+    document.getElementById('check-' + question.id).hidden = true;
+    document.getElementById('next-' + question.id).hidden = false;
+
+    updateMissionMeta(missionKey);
+    updateScorePanel();
+    announce((correct ? 'Respuesta correcta. ' : 'Respuesta incorrecta. ') + (correct ? question.feedback.correct : question.feedback.incorrect));
+  }
+
+  function applyAnsweredState(question, missionKey, qIndex, total) {
+    var record = state.answers[question.id];
+    if (!record) return;
+
+    if (question.type === 'mcq' || question.type === 'tf') {
+      var count = question.type === 'tf' ? 2 : question.options.length;
+      for (var i = 0; i < count; i++) {
+        var el = document.getElementById('opt-' + question.id + '-' + i);
+        if (!el) continue;
+        el.classList.add('is-disabled');
+        var input = el.querySelector('input');
+        if (input) {
+          input.disabled = true;
+          if (record.selectedIndex !== undefined && String(i) === String(record.selectedIndex)) {
+            input.checked = true;
+          }
+        }
+        if (i === question.correctIndex) el.classList.add('is-correct');
+        else if (record.selectedIndex !== undefined && String(i) === String(record.selectedIndex)) el.classList.add('is-incorrect');
+      }
+    } else if (question.type === 'match') {
+      question.items.forEach(function (item, i) {
+        var sel = document.getElementById('sel-' + question.id + '-' + i);
+        var row = document.getElementById('row-' + question.id + '-' + i);
+        if (!sel || !row) return;
+        var chosen = record.selections ? record.selections[i] : item.correct;
+        sel.value = chosen;
+        sel.disabled = true;
+        row.classList.add(chosen === item.correct ? 'is-correct' : 'is-incorrect');
+      });
+    }
+
+    var fb = document.getElementById('fb-' + question.id);
+    fb.hidden = false;
+    fb.classList.add(record.correct ? 'correct' : 'incorrect');
+    fb.innerHTML =
+      '<span class="feedback-icon" aria-hidden="true">' + (record.correct ? '✅' : '💡') + '</span>' +
+      '<div><p class="feedback-title">' + (record.correct ? '¡Correcto!' : 'Casi...') + '</p>' +
+      '<p class="feedback-text">' + escapeHtml(record.correct ? question.feedback.correct : question.feedback.incorrect) + '</p></div>';
+
+    document.getElementById('check-' + question.id).hidden = true;
+    document.getElementById('next-' + question.id).hidden = false;
+  }
+
+  function handleNext(missionKey, qIndex, total) {
+    if (qIndex < total - 1) {
+      state.missionQIndex[missionKey] = qIndex + 1;
+      saveState();
+      renderMissionQuestion(missionKey);
+      var container = document.getElementById((missionKey === 'mf' ? 'mf' : missionKey) + '-question-container');
+      if (container) container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    if (missionKey === 'm1') goTo('screen-mission2');
+    else if (missionKey === 'm2') goTo('screen-mission3');
+    else if (missionKey === 'm3') goTo('screen-mission-final');
+    else if (missionKey === 'mf') goTo('screen-results');
+  }
+
+  /* -----------------------------------------------------------------------
+     5. RESULTADOS E INSIGNIA
+     ----------------------------------------------------------------------- */
+  function rankFor(score) {
+    if (score >= 90) return { label: 'Detective experto', icon: '🏆' };
+    if (score >= 70) return { label: 'Detective avanzado', icon: '🥇' };
+    if (score >= 50) return { label: 'Detective en entrenamiento', icon: '🥈' };
+    return { label: 'Detective aprendiz', icon: '🥉' };
+  }
+
+  function renderResults() {
+    var score = computeScore();
+    var rank = rankFor(score);
+    document.getElementById('results-score').textContent = score;
+    document.getElementById('results-rank').textContent = rank.icon + ' ' + rank.label;
+
+    var labels = { m1: 'Misión 1 · Literal', m2: 'Misión 2 · Inferencial', m3: 'Misión 3 · Crítica', mf: 'Reto final' };
+    var wrap = document.getElementById('results-breakdown');
+    var html = '';
+    MISSION_ORDER.forEach(function (key) {
+      var r = state.results[key];
+      var pct = r.total ? Math.round((r.correct / r.total) * 100) : 0;
+      html += '' +
+        '<div class="breakdown-row">' +
+        '<span>' + labels[key] + '</span>' +
+        '<span class="breakdown-bar-wrap"><span class="breakdown-bar" style="width:' + pct + '%"></span></span>' +
+        '<span>' + r.correct + '/' + r.total + '</span>' +
+        '</div>';
+    });
+    wrap.innerHTML = html;
+  }
+
+  function renderBadge() {
+    var score = computeScore();
+    var rank = rankFor(score);
+    document.getElementById('badge-display').textContent = rank.icon;
+    var messages = {
+      'Detective experto': '¡Impresionante! Leíste con mucha atención y resolviste el caso casi a la perfección.',
+      'Detective avanzado': '¡Gran trabajo! Encontraste la mayoría de las pistas del caso.',
+      'Detective en entrenamiento': 'Vas por buen camino. Con un poco más de práctica serás un gran detective.',
+      'Detective aprendiz': 'Todo detective empieza así. Puedes volver a leer el caso y practicar de nuevo.'
+    };
+    document.getElementById('badge-message').textContent = 'Insignia: ' + rank.label + '. ' + messages[rank.label];
+  }
+
+  /* -----------------------------------------------------------------------
+     6. GLOSARIO EMERGENTE (LECTURA)
+     ----------------------------------------------------------------------- */
+  function setupGlossary() {
+    var popover = document.getElementById('gloss-popover');
+    var wordEl = document.getElementById('gloss-word');
+    var defEl = document.getElementById('gloss-def');
+    var closeBtn = document.getElementById('gloss-close');
+
+    document.querySelectorAll('.gloss').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        wordEl.textContent = btn.textContent;
+        defEl.textContent = btn.getAttribute('data-def');
+        popover.hidden = false;
+        closeBtn.focus();
+      });
+    });
+
+    closeBtn.addEventListener('click', function () {
+      popover.hidden = true;
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !popover.hidden) {
+        popover.hidden = true;
+      }
+    });
+  }
+
+  /* -----------------------------------------------------------------------
+     7. AUDIO OPCIONAL DE LECTURA (Web Speech API del navegador)
+     ----------------------------------------------------------------------- */
+  function setupSpeech() {
+    var playBtn = document.getElementById('btn-tts-play');
+    var stopBtn = document.getElementById('btn-tts-stop');
+    var unsupportedMsg = document.getElementById('tts-unsupported');
+
+    if (!('speechSynthesis' in window)) {
+      playBtn.hidden = true;
+      stopBtn.hidden = true;
+      unsupportedMsg.hidden = false;
+      return;
+    }
+
+    playBtn.addEventListener('click', function () {
+      window.speechSynthesis.cancel();
+      var utterance = new SpeechSynthesisUtterance(STORY_PLAIN_TEXT);
+      utterance.lang = 'es-ES';
+      utterance.rate = 0.95;
+      utterance.onend = function () {
+        playBtn.hidden = false;
+        stopBtn.hidden = true;
+      };
+      window.speechSynthesis.speak(utterance);
+      playBtn.hidden = true;
+      stopBtn.hidden = false;
+    });
+
+    stopBtn.addEventListener('click', stopSpeech);
+  }
+
+  function stopSpeech() {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    var playBtn = document.getElementById('btn-tts-play');
+    var stopBtn = document.getElementById('btn-tts-stop');
+    if (playBtn && stopBtn) {
+      playBtn.hidden = false;
+      stopBtn.hidden = true;
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     8. ANUNCIOS PARA LECTORES DE PANTALLA
+     ----------------------------------------------------------------------- */
+  function announce(text) {
+    var region = document.getElementById('global-announcer');
+    if (region) region.textContent = text;
+  }
+
+  /* -----------------------------------------------------------------------
+     9. NAVEGACIÓN GENERAL Y REINICIO
+     ----------------------------------------------------------------------- */
+  function setupGlobalNavigation() {
+    document.addEventListener('click', function (e) {
+      var nextBtn = e.target.closest('[data-next]');
+      if (nextBtn) { goTo(nextBtn.getAttribute('data-next')); return; }
+      var prevBtn = e.target.closest('[data-prev]');
+      if (prevBtn) { goTo(prevBtn.getAttribute('data-prev')); return; }
+    });
+
+    function doReset() {
+      var msg = '¿Seguro que quieres borrar tu progreso guardado? Empezarás el caso desde el principio.';
+      if (window.confirm(msg)) {
+        resetState();
+        goTo('screen-welcome');
+      }
+    }
+
+    document.getElementById('btn-reset-progress').addEventListener('click', doReset);
+    document.getElementById('btn-restart').addEventListener('click', doReset);
+  }
+
+  /* -----------------------------------------------------------------------
+     10. INICIALIZACIÓN
+     ----------------------------------------------------------------------- */
+  function init() {
+    setupGlobalNavigation();
+    setupGlossary();
+    setupSpeech();
+    goTo(state.currentScreen || 'screen-welcome');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+</script>
+</body>
+</html>
